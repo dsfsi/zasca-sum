@@ -116,7 +116,7 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
 if args.do_train:
   training_args = Seq2SeqTrainingArguments(
-      output_dir=args.output_dir,
+      output_dir=os.path.join(args.output_dir, '_'.join(args.model_name.split('/'))),
       evaluation_strategy=args.evaluation_strategy,
       learning_rate=args.learning_rate,
       per_device_train_batch_size=args.per_device_train_batch_size,
