@@ -17,13 +17,13 @@ def preprocess_function(examples):
   inputs = [prefix + doc for doc in examples["main"]]
   model_inputs = tokenizer(
                   inputs,
-                  max_length=11600,
+                  max_length=input_max_length,
                   truncation=True
                 )
 
   labels = tokenizer(
             text_target=examples["media-summary"],
-            max_length=1200,
+            max_length=label_max_length,
             truncation=True
           )
 
@@ -52,11 +52,14 @@ def compute_metrics(eval_pred):
   return {k: round(v, 4) for k, v in result.items()}
 
 parser = argparse.ArgumentParser(description='Fine-tune a T5 model on the SCA Judgment and Summaries dataset')
+
 parser.add_argument('--data_dir', type=str, default='data', help='Path to the directory containing the train, test and dev splits of the SCA Judgment and Summaries dataset')
 parser.add_argument('--output_dir', type=str, default='sca_judgment_summaries', help='Path to the directory to save the fine-tuned model')
 
 parser.add_argument('--model_name', type=str, default='t5-small', help='Name of the T5 model to use')
 parser.add_argument('--eval_metric', type=str, default='rouge', help='Name of the metric to use for evaluation')
+parser.add_argument('input_max_length', type=int, default=11600, help='Maximum length of the input')
+parser.add_argument('label_max_length', type=int, default=1200, help='Maximum length of the label')
 
 parser.add_argument('--learning_rate', type=float, default=2e-5, help='Learning rate for the fine-tuning')
 parser.add_argument('--per_device_train_batch_size', type=int, default=16, help='Batch size for training')
@@ -101,6 +104,8 @@ model_name = args.model_name
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 prefix = "summarize: "
+input_max_length = args.input_max_length
+label_max_length = args.label_max_length
 
 tokenized_scaj = dataset.map(preprocess_function, batched=True)
 data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model_name)
