@@ -4,6 +4,8 @@ python scripts/finetune.py \
   --model_name t5-small \
   --eval_metric rouge \
   --learning_rate 2e-5 \
+  --input_max_length 11600 \
+  --label_max_length 1200 \
   --per_device_train_batch_size 16 \
   --per_device_eval_batch_size 16 \
   --weight_decay 0.01 \
