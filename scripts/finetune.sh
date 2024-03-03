@@ -1,6 +1,6 @@
-python finetune.py \
-  --data_dir ../data \
-  --output_dir ../models \
+python scripts/finetune.py \
+  --data_dir data \
+  --output_dir models \
   --model_name t5-small \
   --eval_metric rouge \
   --learning_rate 2e-5 \
