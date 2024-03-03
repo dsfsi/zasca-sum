@@ -58,8 +58,8 @@ parser.add_argument('--output_dir', type=str, default='sca_judgment_summaries', 
 
 parser.add_argument('--model_name', type=str, default='t5-small', help='Name of the T5 model to use')
 parser.add_argument('--eval_metric', type=str, default='rouge', help='Name of the metric to use for evaluation')
-parser.add_argument('input_max_length', type=int, default=11600, help='Maximum length of the input')
-parser.add_argument('label_max_length', type=int, default=1200, help='Maximum length of the label')
+parser.add_argument('--input_max_length', type=int, default=11600, help='Maximum length of the input')
+parser.add_argument('--label_max_length', type=int, default=1200, help='Maximum length of the label')
 
 parser.add_argument('--learning_rate', type=float, default=2e-5, help='Learning rate for the fine-tuning')
 parser.add_argument('--per_device_train_batch_size', type=int, default=16, help='Batch size for training')
