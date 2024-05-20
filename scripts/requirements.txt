@@ -3,3 +3,5 @@ datasets
 evaluate
 rouge_score
 accelerate
+openai
+google-generativeai

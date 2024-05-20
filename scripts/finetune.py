@@ -17,13 +17,13 @@ def preprocess_function(examples):
   inputs = [prefix + doc for doc in examples["main"]]
   model_inputs = tokenizer(
                   inputs,
-                  max_length=11600,
+                  max_length=input_max_length,
                   truncation=True
                 )
 
   labels = tokenizer(
             text_target=examples["media-summary"],
-            max_length=1200,
+            max_length=label_max_length,
             truncation=True
           )
 
@@ -52,11 +52,14 @@ def compute_metrics(eval_pred):
   return {k: round(v, 4) for k, v in result.items()}
 
 parser = argparse.ArgumentParser(description='Fine-tune a T5 model on the SCA Judgment and Summaries dataset')
+
 parser.add_argument('--data_dir', type=str, default='data', help='Path to the directory containing the train, test and dev splits of the SCA Judgment and Summaries dataset')
 parser.add_argument('--output_dir', type=str, default='sca_judgment_summaries', help='Path to the directory to save the fine-tuned model')
 
 parser.add_argument('--model_name', type=str, default='t5-small', help='Name of the T5 model to use')
 parser.add_argument('--eval_metric', type=str, default='rouge', help='Name of the metric to use for evaluation')
+parser.add_argument('--input_max_length', type=int, default=11600, help='Maximum length of the input')
+parser.add_argument('--label_max_length', type=int, default=1200, help='Maximum length of the label')
 
 parser.add_argument('--learning_rate', type=float, default=2e-5, help='Learning rate for the fine-tuning')
 parser.add_argument('--per_device_train_batch_size', type=int, default=16, help='Batch size for training')
@@ -101,6 +104,8 @@ model_name = args.model_name
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 prefix = "summarize: "
+input_max_length = args.input_max_length
+label_max_length = args.label_max_length
 
 tokenized_scaj = dataset.map(preprocess_function, batched=True)
 data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model_name)
@@ -111,26 +116,26 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
 if args.do_train:
   training_args = Seq2SeqTrainingArguments(
-      output_dir=args.output_dir,
-      evaluation_strategy=args.evaluation_strategy,
-      learning_rate=args.learning_rate,
-      per_device_train_batch_size=args.per_device_train_batch_size,
-      per_device_eval_batch_size=args.per_device_eval_batch_size,
-      weight_decay=args.weight_decay,
-      save_total_limit=args.save_total_limit,
-      num_train_epochs=args.num_train_epochs,
-      predict_with_generate=str(args.predict_with_generate),
-      fp16=str(args.fp16),
+    output_dir=os.path.join(args.output_dir, '_'.join(args.model_name.split('/'))),
+    evaluation_strategy=args.evaluation_strategy,
+    learning_rate=args.learning_rate,
+    per_device_train_batch_size=args.per_device_train_batch_size,
+    per_device_eval_batch_size=args.per_device_eval_batch_size,
+    weight_decay=args.weight_decay,
+    save_total_limit=args.save_total_limit,
+    num_train_epochs=args.num_train_epochs,
+    predict_with_generate=str(args.predict_with_generate),
+    fp16=str(args.fp16)
   )
 
   trainer = Seq2SeqTrainer(
-      model=model,
-      args=training_args,
-      train_dataset=tokenized_scaj["train"],
-      eval_dataset=tokenized_scaj["dev"],
-      tokenizer=tokenizer,
-      data_collator=data_collator,
-      compute_metrics=compute_metrics,
+    model=model,
+    args=training_args,
+    train_dataset=tokenized_scaj["train"],
+    eval_dataset=tokenized_scaj["dev"],
+    tokenizer=tokenizer,
+    data_collator=data_collator,
+    compute_metrics=compute_metrics
   )
 
   train_result = trainer.train()
