@@ -7,7 +7,7 @@ from statistics import mean
 from bert_score import BERTScorer
 from transformers import BertTokenizer, BertForMaskedLM, BertModel
 
-file_name = 'data_with_predictions'
+file_name = 'legal_led_data_with_predictions'
 data_file = pd.read_csv(f'sca-longformer/{file_name}.tsv', sep='\t')
 
 rouge = load('rouge')
@@ -27,5 +27,5 @@ results['bertscore f1'] = round(mean(bert_result['f1']), 4) * 100
 
 print(results)
 
-with open(f'{file_name}.json', 'w') as json_file:
+with open(f'sca-longformer/{file_name}.json', 'w') as json_file:
   json.dump(results, json_file)

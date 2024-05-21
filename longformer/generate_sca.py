@@ -5,7 +5,7 @@ import pandas as pd
 from datasets import Dataset
 from transformers import LEDTokenizer, LEDForConditionalGeneration
 
-model_name = "allenai/led-base-16384"
+model_name = "../models/sca-legal-led"
 
 # load test data
 sca_test = Dataset.from_pandas(pd.read_csv('../data/test.tsv', sep='\t'))
@@ -26,6 +26,5 @@ def generate_summary(batch):
   batch["predicted_summary"] = tokenizer.batch_decode(predicted_abstract_ids, skip_special_tokens=True)
   return batch
 
-
 result = sca_test.map(generate_summary, batched=True, batch_size=4)
-result.to_pandas().to_csv('sca-longformer/0_shot_data_with_predictions.tsv', sep='\t', index=False)
+result.to_pandas().to_csv('sca-longformer/legal_led_data_with_predictions.tsv', sep='\t', index=False)

@@ -1,5 +1,4 @@
 import random
-import evaluate
 import pandas as pd
 from datasets import ClassLabel, Dataset, features, load_metric
 # from sklearn.model_selection import train_test_split
@@ -66,7 +65,8 @@ val_dataset = Dataset.from_pandas(pd.read_csv('../data/dev.tsv', sep='\t'))
 max_input_length = 16384
 max_output_length = 1024
 batch_size = 1
-model_name = "allenai/led-base-16384"
+model_name = "nsi319/legal-pegasus"
+output_dir = "../models/sca-legal-led"
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -117,13 +117,13 @@ training_args = Seq2SeqTrainingArguments(
   per_device_train_batch_size=batch_size,
   per_device_eval_batch_size=batch_size,
   fp16=True,
-  output_dir="./",
+  output_dir=output_dir,
   logging_steps=5,
   eval_steps=30,
   save_steps=30,
   save_total_limit=2,
   gradient_accumulation_steps=4,
-  num_train_epochs=1,
+  num_train_epochs=3,
   report_to="tensorboard",
 )
 
@@ -140,4 +140,5 @@ try:
   trainer.train(resume_from_checkpoint = True)
 except:
   trainer.train()
-trainer.save_model("models/sca-longformer")
+
+trainer.save_model(output_dir)
