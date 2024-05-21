@@ -1,0 +1,6 @@
+datasets
+evaluate
+accelerate
+bert-score
+rouge_score
+transformers
