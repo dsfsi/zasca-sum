@@ -1,7 +1,6 @@
-transformers
-datasets
-evaluate
-rouge_score
-accelerate
-openai
-google-generativeai
+nltk
+gensim
+PyMuPDF
+bertopic
+pyLDAvis
+wordcloud
