@@ -39,7 +39,7 @@ plt.rcParams["font.family"] = "Tahoma"
 sns.set_theme(style="whitegrid", font="Tahoma")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-HOME_DIR = Path(".")
+HOME_DIR = Path("..")
 
 RAW_DATA_DIR = HOME_DIR / "raw"
 PROCESSED_DATA_DIR = HOME_DIR / "processed"
@@ -49,6 +49,7 @@ DATA_ANALYSIS_PATH = HOME_DIR / "data_analysis"
 FIGURES_DIR = DATA_ANALYSIS_PATH / "plots"
 
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
 POST_TAGS = ['ADJ','ADP','ADV','CONJ','DET','NOUN','NUM','PRT','PRON','VERB','.','X']
 
 

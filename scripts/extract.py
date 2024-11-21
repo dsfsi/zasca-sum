@@ -4,7 +4,7 @@ from pathlib import Path
 from tqdm.notebook import tqdm
 from utils import FileManager, PDFExtractor
 
-FileManager.unzip_data('../data/raw.zip', '../data')
+FileManager.unzip_data('../raw.zip', '..')
 
 directories = {
   "with_summaries": {
@@ -20,7 +20,7 @@ directories = {
 for dir_key, dir_info in directories.items():
   data = []
   pdir = Path(dir_key)
-  output_dir = 'processed' / pdir
+  output_dir = '../processed' / pdir
   output_dir.mkdir(parents=True, exist_ok=True)
 
   for root, dirs, files in tqdm(os.walk(pdir)):
