@@ -8,12 +8,10 @@ FileManager.unzip_data('../data/raw.zip', '../data')
 
 directories = {
   "with_summaries": {
-    "path": Path('../data/raw/with_summaries'),
     "columns": ['id', 'type', 'year', 'main_judgement', 'media_summary'],
     "has_summary": True
   },
   "without_summaries": {
-    "path": Path('../data/raw/without_summaries'),
     "columns": ['id', 'type', 'year', 'main_judgement'],
     "has_summary": False
   }
@@ -21,7 +19,9 @@ directories = {
 
 for dir_key, dir_info in directories.items():
   data = []
-  pdir = dir_info["path"]
+  pdir = Path(dir_key)
+  output_dir = 'processed' / pdir
+  output_dir.mkdir(parents=True, exist_ok=True)
 
   for root, dirs, files in tqdm(os.walk(pdir)):
     if not files:
@@ -43,4 +43,4 @@ for dir_key, dir_info in directories.items():
       continue
 
   df = pd.DataFrame(data, columns=dir_info["columns"])
-  df.to_csv(f'../data/processed/judgments_{dir_key}.tsv', sep='\t', index=False)
+  df.to_csv(f'{output_dir}/judgments.tsv', sep='\t', index=False)

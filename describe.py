@@ -1,10 +1,8 @@
 import logging
 import pandas as pd
 from pathlib import Path
-from utils import DataLoader, SCAPlotter, TextProcessor, TopicModeling
+from utils import DataLoader, SCAPlotter, TextProcessor, TopicModeling, DATA_ANALYSIS_PATH
 
-DATA_ANALYSIS_PATH = Path('../data_analysis')
-DATA_ANALYSIS_PATH.mkdir(parents=True, exist_ok=True)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 logging.info('Initialising the data loader, plotter, text processor and topic modeler')

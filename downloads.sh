@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DATA_DIR=../data
+DATA_DIR=processed
 URL=https://nlp.stanford.edu/data/glove.6B.zip
 ZIP_FILE=$DATA_DIR/glove.6B.zip
 UNZIPPED_FILE=$DATA_DIR/glove.6B.100d.txt

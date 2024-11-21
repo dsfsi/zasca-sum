@@ -39,12 +39,11 @@ plt.rcParams["font.family"] = "Tahoma"
 sns.set_theme(style="whitegrid", font="Tahoma")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-HOME_DIR = Path("..")
+HOME_DIR = Path(".")
 
-EXTRACTED_DATA_DIR = HOME_DIR / "data"
-RAW_DATA_DIR = EXTRACTED_DATA_DIR / "raw"
-PROCESSED_DATA_DIR = EXTRACTED_DATA_DIR / "processed"
-GLOVE_EMBEDDINGS_FILE = EXTRACTED_DATA_DIR / "glove.6B.100d.txt"
+RAW_DATA_DIR = HOME_DIR / "raw"
+PROCESSED_DATA_DIR = HOME_DIR / "processed"
+GLOVE_EMBEDDINGS_FILE = PROCESSED_DATA_DIR / "glove.6B.100d.txt"
 
 DATA_ANALYSIS_PATH = HOME_DIR / "data_analysis"
 FIGURES_DIR = DATA_ANALYSIS_PATH / "plots"
